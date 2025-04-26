@@ -1,0 +1,16 @@
+﻿
+
+namespace Eshop.Domain.Enums
+{
+   
+        public enum CreditCardProvider
+        {
+            Visa,
+            MasterCard,
+            AmericanExpress
+    
+
+    }
+
+    
+}

@@ -1,59 +1,60 @@
 ﻿using EShop.Application.Services;
-
+using Eshop.Domain.Exceptions.CreditCard;
 namespace EShop.Application.Tests.Services
 {
     public class CreditCardServiceTest
     {
 
         [Fact]
-        public void ValidateCard_CardHas12Digits_ExpectedFalse()
+        public void ValidateCard_CheckCorrectLength_ExpectedTrue()
         {
             var validatecard = new CreditCardService();
 
 
-            var card = validatecard.ValidateCardNumber("342516738109");
+            var card = validatecard.ValidateCardNumber("647389287647362");
 
-            Assert.False(card);
+            Assert.True(card);
 
 
         }
 
         [Fact]
-        public void ValidateCard_CardHas19Digits_ExpectedFalse()
+        public void ValidateCard_NumberTooShortException_ExpectedTrue()
         {
             var validatecard = new CreditCardService();
 
-            var card = validatecard.ValidateCardNumber("3425169754678738109");
+            var card = "3425";
 
-            Assert.False(card);
+            Assert.Throws<CardNumberTooShortException>(() => validatecard.ValidateCardNumber(card));
 
 
         }
 
         [Fact]
-        public void ValidateCard_CardHasLessThan12Digits_ExpectedFalse()
+        public void ValidateCard_NumberTooLongException_ExpectedTrue()
         {
             var validatecard = new CreditCardService();
 
-            var card = validatecard.ValidateCardNumber("3109");
+            var card = "39097865675675675767497806769109";
 
-            Assert.False(card);
+            Assert.Throws<CardNumberTooLongException>(() => validatecard.ValidateCardNumber(card));
 
         }
-
         [Fact]
-        public void ValidateCard_CardHasMoreThan19Digits_ExpectedFalse()
+
+        public void ValidateCard_NumberIsInvalide_ExpectedTrue()
         {
             var validatecard = new CreditCardService();
 
-            var card = validatecard.ValidateCardNumber("34251697546787381099265432");
+            var card = "26.4-65342-65.24-654";
 
-            Assert.False(card);
+            Assert.Throws<CardNumberInvalideException>(() => validatecard.GetCardType(card));
+
+
 
         }
-        
 
-       
+
 
         [Theory]
         [InlineData("3497 7965 8312 797")]
@@ -85,7 +86,6 @@ namespace EShop.Application.Tests.Services
         [InlineData("5530016454538418", "MasterCard")]
         [InlineData("5551561443896215", "MasterCard")]
         [InlineData("5131208517986691", "MasterCard")]
-        [InlineData("", "Unknown")]
         public void ValidateCard_CheckGetCardType_ReturnTrue(string cardNumber, string cardType)
         {
 
