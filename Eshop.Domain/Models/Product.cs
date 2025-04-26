@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace EShop.Models
+namespace EShop.Domain.Models
 {
     public class Product : BaseModel
     {
